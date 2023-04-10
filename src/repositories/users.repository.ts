@@ -1,7 +1,9 @@
 import db from "../configs/database.js"
+import { QueryResult } from "pg"
+import { UserEntity,CreateUser,ListAllUsers,FindUserByEmail } from "../protocols.js"
 
-async function createUser({name,email,password}){
-    await db.query(
+async function createUser({ name, email, password}: CreateUser): Promise<QueryResult>{
+    return await db.query(
     `
     INSERT INTO users (name, email, password)
     VALUES ($1,$2,$3)
@@ -9,7 +11,7 @@ async function createUser({name,email,password}){
     [name,email,password])
 }
 
-async function listAllUsers() {
+async function listAllUsers(): Promise<QueryResult<ListAllUsers>> {
     return await db.query(
     `
     SELECT * FROM users 
@@ -17,7 +19,7 @@ async function listAllUsers() {
 
 }
 
-async function findUserByEmail({email}) {
+async function findUserByEmail(email: string): Promise<QueryResult<FindUserByEmail>> {
     return await db.query(
     `
     SELECT * FROM users WHERE email = $1
@@ -26,7 +28,7 @@ async function findUserByEmail({email}) {
 
 }
 
-async function findUserById({id}) {
+async function findUserById({id}: number) {
     return await db.query(
     `
     SELECT * FROM users WHERE id = $1
@@ -35,7 +37,7 @@ async function findUserById({id}) {
 
 }
 
-async function updateUser({name,email,password,id}) {
+async function updateUser({id,name,email,password}:UserEntity) {
       await db.query(
         `
             UPDATE users 
@@ -45,7 +47,7 @@ async function updateUser({name,email,password,id}) {
       );
 }
 
-async function deleteUser({id}) {
+async function deleteUser({id}: number) {
     await db.query(
     `
     DELETE FROM users

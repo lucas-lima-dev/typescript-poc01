@@ -1,3 +1,4 @@
+import userService from "services/users.service"
 
 export type UserEntity = {
     id: number,
@@ -6,8 +7,11 @@ export type UserEntity = {
     password:string
 }
 
-export type CreateUser = Omit< UserEntity, "id" | "name" >
+export type CreateUser = Omit< UserEntity, "id"  >
+export type ListAllUsers = Omit< UserEntity, "id" | "email" | "password"  >
+export type FindUserByEmail = Omit< UserEntity, "id" | "email" | "password"  >
 
+pesquiser sobre array de users
 export type ApplicationError = {
     name: string,
     message: string
